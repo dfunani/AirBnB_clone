@@ -3,6 +3,7 @@ serves up a base class for db models to inherit
 """
 import uuid
 from datetime import datetime
+from models import storage
 
 class BaseModel:
     """BaseModel
@@ -26,12 +27,14 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """Serializer
         for the base class and its subclasses
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def __str__(self):
         """ String rep of the obj """
