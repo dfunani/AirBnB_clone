@@ -27,11 +27,12 @@ class BaseModel():
 
     def __str__(self):
         """ String rep of the obj """
-        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({str(self.id)}) {self.__dict__}"
 
     def to_dict(self):
         """ DIctionary rep of the obj """
         temp = {**self.__dict__}
         temp['created_at'] = self.created_at.isoformat()
         temp['updated_at'] = self.updated_at.isoformat()
+        temp['id'] = str(self.id)
         return {**temp, "__class__": self.__class__.__name__}
