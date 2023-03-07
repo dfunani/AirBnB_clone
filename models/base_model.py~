@@ -1,0 +1,11 @@
+"""base_model.py
+serves up a base class for db models to inherit
+"""
+
+class BaseModel():
+    """BaseModel
+    Base class holding reusable functionailty
+    - Serilization
+    - Desrialization
+    - Intepreter methods
+    """
