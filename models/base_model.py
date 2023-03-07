@@ -4,7 +4,7 @@ serves up a base class for db models to inherit
 import uuid
 from datetime import datetime
 
-class BaseModel():
+class BaseModel:
     """BaseModel
     Base class holding reusable functionailty
     - Serilization
@@ -18,8 +18,8 @@ class BaseModel():
         if kwargs:
             try:
                 self.id = kwargs['id']
-                self.created_at = kwargs['created_at']
-                self.updated_at = kwargs['updated_at']
+                self.created_at = datetime.fromisoformat(kwargs['created_at'])
+                self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
             except KeyError as error:
                 print("Dictionary must Contain required attributes as Keys")
         else:

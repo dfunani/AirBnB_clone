@@ -11,7 +11,6 @@ class Test_BaseModel(unittest.TestCase):
 
     def test_init(self):
         """ Tests creation of the base model and asserts if it exists """
-        # basemodel = BaseModel()
         self.assertIs(type(self.basemodel), BaseModel)
         self.assertIs(type(self.basemodel.created_at), datetime)
         self.assertIs(type(self.basemodel.updated_at), datetime)
@@ -24,7 +23,6 @@ class Test_BaseModel(unittest.TestCase):
         self.assertNotEqual(start, end)
 
     def test_dict(self):
-        # basemodel = BaseModel()
         res = self.basemodel.to_dict()
         self.assertIs(type(res), dict)
         self.assertIn('__class__', res)
@@ -35,8 +33,17 @@ class Test_BaseModel(unittest.TestCase):
         self.assertIs(type(res['updated_at']), str)
 
     def test_str_rep(self):
-        # basemodel = BaseModel()
         self.assertRegex(str(self.basemodel), r'\[BaseModel\] \([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\) \{.+\}')
+
+    def test_reinit(self):
+        dictionary = self.basemodel.to_dict()
+        temp = BaseModel(**dictionary)
+        self.assertIsInstance(temp, BaseModel)
+        self.assertIs(type(temp.created_at), datetime)
+        self.assertIs(type(temp.updated_at), datetime)
+        self.assertIs(type(temp.id), str)
+        with self.assertRaises(AttributeError) as error:
+            self.assertTrue(temp.my_number)
 
 if __name__ == "__main__":
     unittest.main()
