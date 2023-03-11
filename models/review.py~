@@ -1,0 +1,14 @@
+"""Models Reviews
+for the application
+"""
+from .base_model import BaseModel
+
+
+class Review(BaseModel):
+    """ Class Review modelling Reviews in storage """
+    place_id: ''
+    user_id: ''
+    text: ''
+
+if __name__ == "__main__":
+    pass

@@ -1,0 +1,160 @@
+"""Console module
+creates an instance of a command window
+"""
+import cmd
+from models import storage, CLASSES
+import importlib
+import re
+import json
+
+class HBNBCommand(cmd.Cmd):
+    """ Program Class window inheriting from the base CMD class """
+
+    prompt = "(hbnb) "
+
+    def default(self, arg):
+        if arg.split('.')[0] not in CLASSES:
+            return False
+        if arg.split('.', 1)[-1] == 'all()':
+            self.do_all(arg.split('.')[0])
+            return False
+        if arg.split('.', 1)[-1] == 'count()':
+            count = 0
+            for obj in dict(storage.all()):
+                if arg.split('.')[0] == obj.split('.')[0]:
+                    count += 1
+            print(count)
+            return False
+
+        show = re.search(r'[.]show[(](.*)[)]', arg)
+        if show:
+            self.do_show((arg.split('.')[0] + ' ' + show.groups()[0]).strip())
+            return False
+
+        destroy = re.search(r'[.]destroy[(](.*)[)]', arg)
+        if destroy:
+            self.do_destroy((arg.split('.')[0] + ' ' + destroy.groups()[0]).strip())
+            return False
+
+        dict_update = re.search(r"[.]update[(](.*)[,]?([{].*[}])[)]", arg)
+        if dict_update:
+            try:
+                print(storage.dict_update((arg.split('.')[0] + '.' + dict_update.groups()[0].replace(',', '').strip()), json.loads(dict_update.groups()[1])))
+            except Exception as e:
+                print(e)
+            finally:
+                return False
+
+        update = re.search(r'[.]update[(](.*)[,]?(.*)[,]?(.*)[)]', arg)
+        if update:
+            self.do_update((arg.split('.')[0] + ' ' + update.groups()[0].replace(',','') + ' ' + update.groups()[1].replace(',','') + ' ' + update.groups()[2]).strip())
+            return False
+
+    def do_update(self, arg):
+        """ Update a BaseModel ID - Only one attribute permissible """
+        if not arg:
+            print("** class name missing **")
+            return False
+        if arg.split(' ')[0] not in CLASSES:
+            print("** class doesn't exist **")
+            return False
+        if len(arg.split(" ")) < 2:
+            print("** instance id missing **")
+            return False
+        else:
+            for key in dict(storage.all()):
+                if key == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
+                    if len(arg.split(' ')) < 3:
+                        print("** attribute name missing **")
+                        return False
+                    if len(arg.split(' ')) < 4:
+                        print("** value missing **")
+                        return False
+                    storage.update(key, arg.split(' ')[2], arg.split(' ')[3])
+                    storage.save()
+                    storage.reload()
+                    return False
+            print("** no instance found **")
+            return False
+
+    def do_all(self, arg):
+        """ Shows all the BaseModels in storage """
+        if not arg or arg in CLASSES:
+            res = []
+            for obj in dict(storage.all()):
+                if not arg or obj.split('.')[0] == arg:
+                    temp = str(CLASSES[obj.split('.')[0]](**storage.all()[obj]))
+                    res.append(temp)
+            print(res)
+            return False
+        print("** class doesn't exist **")
+        return False
+
+    def do_destroy(self, arg):
+        """ Deletes a given BaseModel ID """
+        if not arg:
+            print("** class name missing **")
+            return False
+        if arg.split(" ")[0] not in CLASSES:
+            print("** class doesn't exist **")
+            return False
+        if len(arg.split(" ")) != 2:
+            print("** instance id missing **")
+            return False
+        for objs in storage.all():
+            if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
+                if not storage.delete(objs):
+                    storage.save()
+                    storage.reload()
+                    return False
+                return False
+        print("** no instance found **")
+        return False
+
+    def do_show(self, arg):
+        """ Shows one particlar BaseModel ID """
+        if not arg:
+            print("** class name missing **")
+            return False
+        if arg.split(' ')[0] not in CLASSES:
+            print("** class doesn't exist **")
+            return False
+        if len(arg.split(" ")) != 2:
+            print("** instance id missing **")
+            return False
+        for objs in storage.all():
+            if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
+                print(str(CLASSES[objs.split('.')[0]](**storage.all()[objs])))
+                return False
+        print("** no instance found **")
+        return False
+
+    def do_create(self, arg):
+        """ Creates a new Basemodel Class to storage """
+        if not arg:
+            print("** class name missing **")
+            return False
+        if arg not in CLASSES:
+            print("** class doesn't exist **")
+            return False
+        bm = CLASSES[arg]()
+        storage.new(bm)
+        storage.save()
+        storage.reload()
+        print(bm.to_dict()['id'])
+        return False
+
+    def emptyline(self):
+        """ Overrides emptyline - nothing happens when no command is given """
+        return cmd.Cmd.emptyline(self)
+
+    def do_quit(self, arg):
+        """ Quit command to exit the program """
+        return True
+
+    def do_EOF(self, arg):
+        """ Handler for the end of File/Program """
+        return True
+
+if __name__ == "__main__":
+    HBNBCommand().cmdloop()

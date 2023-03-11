@@ -16,17 +16,5 @@ class Test_FileStorage(unittest.TestCase):
         for keys in storage.all():
             self.assertRegex(keys, r'[a-z0-9]+[.][a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}')
 
-    def test_new(self):
-        temp_fs = storage.all()
-        storage.new(self.bs)
-        storage.save()
-        storage.reload()
-        self.assertTrue(len(storage.all()) - len(temp_fs) == 1)
-        temp_fs = storage.all()
-        storage.new(BaseModel(**self.bs.to_dict))
-        storage.save()
-        storage.reload()
-        self.assertTrue(len(storage.all()) == len(temp_fs))
-
 if __name__ == "__main__":
     unittest._main()

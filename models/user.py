@@ -1,0 +1,16 @@
+"""Models Users
+for the application
+"""
+from .base_model import BaseModel
+
+
+class User(BaseModel):
+    """ Class User modelling Users in storage """
+    email = ''
+    password = ''
+    first_name = ''
+    last_name = ''
+
+
+if __name__ == "__main__":
+    pass

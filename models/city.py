@@ -1,0 +1,13 @@
+"""Models Cities
+for the application
+"""
+from .base_model import BaseModel
+
+
+class City(BaseModel):
+    """ Class City modelling Cities in storage """
+    state_id = ''
+    name = ''
+
+if __name__ == "__main__":
+    pass
