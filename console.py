@@ -64,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_update(self, arg):
-        """ Update a BaseModel ID - Only one attribute permissible """
+        """Update a BaseModel ID - Only one attribute permissible """
         if not arg:
             print("** class name missing **")
             return False
@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
             return False
 
     def do_all(self, arg):
-        """ Shows all the BaseModels in storage """
+        """Shows all the BaseModels in storage """
         if not arg or arg in CLASSES:
             res = []
             for obj in dict(storage.all()):
@@ -105,7 +105,7 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_destroy(self, arg):
-        """ Deletes a given BaseModel ID """
+        """Deletes a given BaseModel ID """
         if not arg:
             print("** class name missing **")
             return False
@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_show(self, arg):
-        """ Shows one particlar BaseModel ID """
+        """Shows one particlar BaseModel ID """
         if not arg:
             print("** class name missing **")
             return False
@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_create(self, arg):
-        """ Creates a new Basemodel Class to storage """
+        """Creates a new Basemodel Class to storage """
         if not arg:
             print("** class name missing **")
             return False
@@ -159,15 +159,15 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def emptyline(self):
-        """ Overrides emptyline - nothing happens when no command is given """
-        return cmd.Cmd.emptyline(self)
+        """Overrides emptyline - nothing happens when no command is given """
+        return False
 
     def do_quit(self, arg):
-        """ Quit command to exit the program """
+        """Quit command to exit the program\n """
         return True
 
     def do_EOF(self, arg):
-        """ Handler for the end of File/Program """
+        """Handler for the end of File/Program """
         return True
 
 
