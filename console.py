@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Console module
 creates an instance of a command window
 """
@@ -7,12 +8,14 @@ import importlib
 import re
 import json
 
+
 class HBNBCommand(cmd.Cmd):
     """ Program Class window inheriting from the base CMD class """
 
     prompt = "(hbnb) "
 
     def default(self, arg):
+        """ Handles line args """
         if arg.split('.')[0] not in CLASSES:
             return False
         if arg.split('.', 1)[-1] == 'all()':
@@ -157,6 +160,7 @@ class HBNBCommand(cmd.Cmd):
     def do_EOF(self, arg):
         """ Handler for the end of File/Program """
         return True
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
