@@ -36,13 +36,18 @@ class HBNBCommand(cmd.Cmd):
 
         destroy = re.search(r'[.]destroy[(](.*)[)]', arg)
         if destroy:
-            self.do_destroy((arg.split('.')[0] + ' ' + destroy.groups()[0]).strip())
+            self.do_destroy((arg.split('.')[0] + ' ' +
+                             destroy.groups()[0]).strip())
             return False
 
-        dict_update = re.search(r"[.]update[(](.*)[,]?([{].*[}])[)]", arg)
+        dict_update = re.search(r"[.]update[(](.*)[,]?([{].*[}])[)]",
+                                arg)
         if dict_update:
             try:
-                storage.dict_update((arg.split('.')[0] + '.' + dict_update.groups()[0].replace(',', '').strip()), json.loads(dict_update.groups()[1]))
+                storage.dict_update((arg.split('.')[0] + '.' +
+                                     dict_update.groups()[0].replace(',', '')
+                                     .strip()), json
+                                    .loads(dict_update.groups()[1]))
                 storage.save()
                 storage.reload()
             except Exception as e:
@@ -52,7 +57,10 @@ class HBNBCommand(cmd.Cmd):
 
         update = re.search(r'[.]update[(](.*)[,]?(.*)[,]?(.*)[)]', arg)
         if update:
-            self.do_update((arg.split('.')[0] + ' ' + update.groups()[0].replace(',','') + ' ' + update.groups()[1].replace(',','') + ' ' + update.groups()[2]).strip())
+            self.do_update((arg.split('.')[0] + ' ' +
+                            update.groups()[0].replace(',', '') + ' ' +
+                            update.groups()[1].replace(',', '') + ' ' +
+                            update.groups()[2]).strip())
             return False
 
     def do_update(self, arg):
@@ -88,7 +96,8 @@ class HBNBCommand(cmd.Cmd):
             res = []
             for obj in dict(storage.all()):
                 if not arg or obj.split('.')[0] == arg:
-                    temp = str(CLASSES[obj.split('.')[0]](**storage.all()[obj]))
+                    temp = str(CLASSES[obj.split('.')[0]]
+                               (**storage.all()[obj]))
                     res.append(temp)
             print(res)
             return False
