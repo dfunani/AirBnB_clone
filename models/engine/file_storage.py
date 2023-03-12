@@ -1,8 +1,9 @@
 """file_storage
-0;10;1cstores files to a .json for persistence
+stores files to a .json for persistence
 responsible for all serialzations
 """
 import json
+
 
 class FileStorage:
     """FileStorage
@@ -24,7 +25,8 @@ class FileStorage:
             return 'Not a valid object passed'
         try:
             obj_t = obj.to_dict()
-            FileStorage.__objects[f"{obj_t['__class__']}.{obj_t['id']}"] = obj_t
+            var = f"{obj_t['__class__']}.{obj_t['id']}"
+            FileStorage.__objects[var] = obj_t
         except (NameError, AttributeError) as e:
             return "Object is not inheriting from a valid class"
 
@@ -64,6 +66,7 @@ class FileStorage:
             return "Invalid Key/Attr"
 
     def dict_update(self, key, obj):
+        """ Updates the dictionary """
         if type(obj) is not dict:
             return 'Not a dictionary'
         for val in obj:
@@ -77,3 +80,7 @@ class FileStorage:
                 FileStorage.__objects[key][val] = obj[val]
             except (AttributeError, KeyError) as e:
                 raise Exception('Key/Attr Error')
+
+
+if __name__ == "__main__":
+    pass

@@ -9,5 +9,6 @@ class City(BaseModel):
     state_id = ''
     name = ''
 
+
 if __name__ == "__main__":
     pass

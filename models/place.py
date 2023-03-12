@@ -3,6 +3,7 @@ for the application
 """
 from .base_model import BaseModel
 
+
 class Place(BaseModel):
     """ Class Place modelling Places in storage """
     city_id = ''
@@ -16,6 +17,7 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = []
+
 
 if __name__ == "__main__":
     pass

@@ -4,7 +4,9 @@ import importlib
 storage = FileStorage()
 storage.reload()
 
+
 class Modules:
+    """ Holds a control class for creating a CLASSES obj """
     __base_model = importlib.import_module('.base_model', package='models')
     __user = importlib.import_module('.user', package='models')
     __place = importlib.import_module('.place', package='models')
@@ -12,7 +14,6 @@ class Modules:
     __city = importlib.import_module('.city', package='models')
     __amenity = importlib.import_module('.amenity', package='models')
     __review = importlib.import_module('.review', package='models')
-
 
     def factory(self):
         return {
@@ -23,7 +24,8 @@ class Modules:
             "City": Modules.__city.City,
             "Amenity": Modules.__amenity.Amenity,
             "Review": Modules.__review.Review
-    }
+        }
+
 
 CLASSES = Modules().factory()
 FileStorage.CLASSES = CLASSES

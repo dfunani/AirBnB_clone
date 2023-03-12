@@ -8,5 +8,6 @@ class Amenity(BaseModel):
     """ Class Amenity modelling Amenities in storage """
     name = ''
 
+
 if __name__ == "__main__":
     pass
