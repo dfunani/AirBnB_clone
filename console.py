@@ -155,7 +155,10 @@ class HBNBCommand(cmd.Cmd):
         storage.new(bm)
         storage.save()
         storage.reload()
-        print(bm.to_dict()['id'])
+        try:
+            print(bm.to_dict()['id'])
+        except Exception as e:
+            print(e)
         return False
 
     def emptyline(self):
