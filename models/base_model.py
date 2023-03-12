@@ -39,7 +39,7 @@ class BaseModel:
 
     def __str__(self):
         """ String rep of the obj """
-        return f"[{self.__class__.__name__}] ({str(self.id)}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] (self.id) {self.to_dict()}"
 
     def to_dict(self):
         """ DIctionary rep of the obj """
