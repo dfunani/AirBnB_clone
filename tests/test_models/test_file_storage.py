@@ -5,6 +5,7 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 
+
 class Test_FileStorage(unittest.TestCase):
     """ test class inehirting from Unittestings TestCase Engine """
 
@@ -14,7 +15,10 @@ class Test_FileStorage(unittest.TestCase):
     def test_all(self):
         self.assertIs(type(storage.all()), dict)
         for keys in storage.all():
-            self.assertRegex(keys, r'[a-z0-9]+[.][a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}')
+            var2 = r'-[a-z0-9]{4}-[a-z0-9]{12}'
+            var = r'[a-z0-9]+[.][a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}'
+            self.assertRegex(keys, var + var2)
+
 
 if __name__ == "__main__":
     unittest._main()

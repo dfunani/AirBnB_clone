@@ -46,7 +46,8 @@ class BaseModel:
         try:
             t = dict(self.__class__.__dict__)
             check = ['save', 'to_dict']
-            s = {r: t[r] for r in t if not r.startswith('_') and r not in check}
+            s = {r: t[r] for r in t if not r.startswith('_') and
+                 r not in check}
             temp = {**self.__dict__, **s}
             temp['created_at'] = self.created_at.isoformat()
             temp['updated_at'] = self.updated_at.isoformat()

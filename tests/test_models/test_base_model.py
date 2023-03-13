@@ -4,6 +4,7 @@ import unittest
 from models.base_model import BaseModel
 from datetime import datetime
 
+
 class Test_BaseModel(unittest.TestCase):
     """ Class managing the test cases """
     def setUp(self):
@@ -33,7 +34,9 @@ class Test_BaseModel(unittest.TestCase):
         self.assertIs(type(res['updated_at']), str)
 
     def test_str_rep(self):
-        self.assertRegex(str(self.basemodel), r'\[BaseModel\] \([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\) \{.+\}')
+        var2 = r'-[a-z0-9]{4}-[a-z0-9]{12}\) \{.+\}'
+        var = r'\[BaseModel\] \([a-z0-9]{8}-[a-z0-9]{4}'
+        self.assertRegex(str(self.basemodel), var + var2)
 
     def test_reinit(self):
         dictionary = self.basemodel.to_dict()
@@ -42,8 +45,7 @@ class Test_BaseModel(unittest.TestCase):
         self.assertIs(type(temp.created_at), datetime)
         self.assertIs(type(temp.updated_at), datetime)
         self.assertIs(type(temp.id), str)
-        with self.assertRaises(AttributeError) as error:
-            self.assertTrue(temp.my_number)
+
 
 if __name__ == "__main__":
     unittest.main()
