@@ -75,7 +75,7 @@ class FileStorage:
         if key.split('.')[0] not in this.factory():
             return 'key must be a valid model '
         try:
-            FileStorage.__objects[key][prop] = val
+            setattr(FileStorage.__objects[key], prop, val)
         except (AttributeError, KeyError):
             return "Invalid Key/Attr"
 

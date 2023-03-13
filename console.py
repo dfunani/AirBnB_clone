@@ -63,12 +63,26 @@ class HBNBCommand(cmd.Cmd):
                             update.groups()[2]).strip())
             return False
 
+    def do_count(self, line):
+        """Counts the instances of a class.
+        """
+        words = line.split(' ')
+        if not words[0]:
+            print("** class name missing **")
+        elif words[0] not in storage.factory():
+            print("** class doesn't exist **")
+        else:
+            matches = [
+                k for k in storage.all() if k.startswith(
+                    words[0] + '.')]
+            print(len(matches))
+
     def do_update(self, arg):
         """Update a BaseModel ID - Only one attribute permissible """
         if not arg:
             print("** class name missing **")
             return False
-        if arg.split(' ')[0] not in CLASSES:
+        if arg.split(' ')[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
         if len(arg.split(" ")) < 2:
@@ -84,8 +98,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** value missing **")
                         return False
                     storage.update(key, arg.split(' ')[2], arg.split(' ')[3])
-                    storage.save()
-                    storage.reload()
+                    storage.all()[key].save()
                     return False
             print("** no instance found **")
             return False
@@ -134,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
         if arg.split(' ')[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
-        if len(arg.split(" ")) != 2:
+        if len(arg.split(" ")) < 2:
             print("** instance id missing **")
             return False
         for objs in storage.all():
