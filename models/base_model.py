@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """base_model.py
 serves up a base class for db models to inherit
 """
