@@ -13,7 +13,7 @@ class FileStorage:
 
     __file_path = "./file.json"
     __objects = {}
-    CLASSES = []
+    CLASSES = {}
 
     def all(self):
         """ return the list of objs """
@@ -21,25 +21,23 @@ class FileStorage:
 
     def new(self, obj):
         """ creates a new objs to dict """
-        if obj.__class__.__name__ not in FileStorage.CLASSES:
-            return 'Not a valid object passed'
-        try:
-            obj_t = obj.to_dict()
-            var = f"{obj_t['__class__']}.{obj_t['id']}"
-            FileStorage.__objects[var] = obj_t
-        except (NameError, AttributeError) as e:
-            return "Object is not inheriting from a valid class"
+        var = f"{type(obj).__name__}.{obj.id}"
+        FileStorage.__objects[var] = obj
 
     def save(self):
         """ Serializer: save to storage filesystem """
         with open(FileStorage.__file_path, 'w') as file:
-            json.dump(FileStorage.__objects, file)
+            temp = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
+            json.dump(temp, file)
 
     def reload(self):
         """ Desrializer: load from storage as dict """
         try:
             with open(FileStorage.__file_path, 'r') as file:
-                FileStorage.__objects = json.load(file)
+                temp = json.load(file)
+                temp = {k: FileStorage.CLASSES[v["__class__"]](**v)
+                        for k, v in temp.items()}
+                FileStorage.__objects = temp
         except FileNotFoundError as error:
             return "File not found"
 

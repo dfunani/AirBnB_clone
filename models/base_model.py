@@ -18,12 +18,12 @@ class BaseModel:
         """Constructor
         for the base class"""
         if kwargs:
-            try:
-                self.id = kwargs['id']
-                self.created_at = datetime.fromisoformat(kwargs['created_at'])
-                self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
-            except KeyError as error:
-                print("Dictionary must Contain required attributes as Keys")
+            for key in kwargs:
+                if key in ['updated_at', 'created_at']:
+                    self.__dict__[key] = datetime.strptime(
+                        kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")
+                else:
+                    self.__dict__[key] = kwargs[key]
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
@@ -39,23 +39,12 @@ class BaseModel:
 
     def __str__(self):
         """ String rep of the obj """
-        return f"[{self.__class__.__name__}] (self.id) {self.to_dict()}"
+        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def to_dict(self):
         """ DIctionary rep of the obj """
-        try:
-            t = dict(self.__class__.__dict__)
-            check = ['save', 'to_dict']
-            s = {r: t[r] for r in t if not r.startswith('_') and
-                 r not in check}
-            temp = {**self.__dict__, **s}
-            temp['created_at'] = self.created_at.isoformat()
-            temp['updated_at'] = self.updated_at.isoformat()
-            temp['id'] = str(self.id)
-            return {**temp, "__class__": self.__class__.__name__}
-        except BaseException as e:
-            return {'error': str(e)}
-
-
-if __name__ == "__main__":
-    pass
+        temp = self.__dict__.copy()
+        temp['created_at'] = temp['created_at'].isoformat()
+        temp['updated_at'] = temp['updated_at'].isoformat()
+        temp['__class__'] = type(self).__name__
+        return temp
