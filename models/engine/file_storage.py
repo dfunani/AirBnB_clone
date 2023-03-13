@@ -62,7 +62,7 @@ class FileStorage:
 
     def delete(self, key):
         """ deletes an obj based off the key """
-        if key.split('.')[0] not in this.factory():
+        if key.split('.')[0] not in self.factory():
             return 'key must be a valid class'
         del FileStorage.__objects[key]
 
@@ -72,7 +72,7 @@ class FileStorage:
             return 'Prop may not updated'
         if type(val) not in [int, str, float]:
             return 'Val type invalid'
-        if key.split('.')[0] not in this.factory():
+        if key.split('.')[0] not in self.factory():
             return 'key must be a valid model '
         try:
             setattr(FileStorage.__objects[key], prop, val)
@@ -88,7 +88,7 @@ class FileStorage:
                 continue
             if type(obj[val]) not in [int, str, float]:
                 continue
-            if key.split('.')[0] not in this.factory():
+            if key.split('.')[0] not in self.factory():
                 continue
             try:
                 FileStorage.__objects[key][val] = obj[val]
