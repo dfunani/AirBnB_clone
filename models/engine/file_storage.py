@@ -71,7 +71,7 @@ class FileStorage:
             return 'Not a dictionary'
         for val in obj:
             if val in ['id', 'created_at', 'updated_at']:
-                retuen "Invalid Prop/Attr"
+                return "Invalid Prop/Attr"
             if type(obj[val]) not in [int, str, float]:
                 return "Invalid value type"
             if key.split('.')[0] not in FileStorage.CLASSES:
