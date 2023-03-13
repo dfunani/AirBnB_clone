@@ -115,15 +115,13 @@ class HBNBCommand(cmd.Cmd):
         if arg.split(" ")[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
-        if len(arg.split(" ")) != 2:
+        if len(arg.split(" ")) < 2:
             print("** instance id missing **")
             return False
         for objs in storage.all():
             if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
-                if not storage.delete(objs):
-                    storage.save()
-                    storage.reload()
-                    return False
+                storage.delete(objs)
+                storage.save()
                 return False
         print("** no instance found **")
         return False
@@ -141,8 +139,7 @@ class HBNBCommand(cmd.Cmd):
             return False
         for objs in storage.all():
             if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
-                print(str(storage.factory()[objs.split('.')[0]](
-                    **storage.all()[objs])))
+                print(storage.all()[objs])
                 return False
         print("** no instance found **")
         return False

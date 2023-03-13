@@ -64,10 +64,7 @@ class FileStorage:
         """ deletes an obj based off the key """
         if key.split('.')[0] not in this.factory():
             return 'key must be a valid class'
-        try:
-            del FileStorage.__objects[key]
-        except AttributeError as e:
-            return "Object found for the given key"
+        del FileStorage.__objects[key]
 
     def update(self, key, prop, val):
         """ Updates an obj based given key ref """
