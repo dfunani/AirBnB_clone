@@ -141,7 +141,8 @@ class HBNBCommand(cmd.Cmd):
             return False
         for objs in storage.all():
             if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
-                print(str(storage.factory()[objs.split('.')[0]](**storage.all()[objs])))
+                print(str(storage.factory()[objs.split('.')[0]](
+                    **storage.all()[objs])))
                 return False
         print("** no instance found **")
         return False
