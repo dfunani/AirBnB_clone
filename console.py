@@ -92,17 +92,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Shows all the BaseModels in storage """
-        if not arg or arg in CLASSES:
+        if arg and arg in CLASSES:
             res = []
-            for obj in dict(storage.all()):
-                if not arg or obj.split('.')[0] == arg:
-                    temp = str(CLASSES[obj.split('.')[0]]
-                               (**storage.all()[obj]))
-                    res.append(temp)
+            for key, obj in storage.all().items():
+                if type(obj).__name__ == arg.split(' ')[0]:
+                    res.append(str(obj))
             print(res)
             return False
-        print("** class doesn't exist **")
-        return False
+        elif arg and arg.split(' ')[0] not in CLASSES:
+            print("** class doesn't exist **")
+            return False
+        else:
+            res = [str(val) for key, val in storage.all().items()]
+            print(res)
+            return False
 
     def do_destroy(self, arg):
         """Deletes a given BaseModel ID """
@@ -152,13 +155,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
         bm = CLASSES[arg]()
-        storage.new(bm)
-        storage.save()
-        storage.reload()
-        try:
-            print(bm.to_dict()['id'])
-        except Exception as e:
-            print(e)
+        bm.save()
+        print(bm.id)
         return False
 
     def emptyline(self):
