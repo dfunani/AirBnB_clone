@@ -13,7 +13,26 @@ class FileStorage:
 
     __file_path = "./file.json"
     __objects = {}
-    CLASSES = {}
+
+    def factory(self):
+        """ Create a CLASSES obj """
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
+
+        return {
+              "BaseModel": BaseModel,
+              "User": User,
+              "Place": Place,
+              "State": State,
+              "City": City,
+              "Amenity": Amenity,
+              "Review": Review
+          }
 
     def all(self):
         """ return the list of objs """
@@ -35,7 +54,7 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r') as file:
                 temp = json.load(file)
-                temp = {k: FileStorage.CLASSES[v['__clas__'](**v)
+                temp = {k: self.factory()[v['__class__']](**v)
                         for k, v in temp.items()}
                 FileStorage.__objects = temp
         except FileNotFoundError as error:
@@ -43,7 +62,7 @@ class FileStorage:
 
     def delete(self, key):
         """ deletes an obj based off the key """
-        if key.split('.')[0] not in FileStorage.CLASSES:
+        if key.split('.')[0] not in this.factory():
             return 'key must be a valid class'
         try:
             del FileStorage.__objects[key]
@@ -56,7 +75,7 @@ class FileStorage:
             return 'Prop may not updated'
         if type(val) not in [int, str, float]:
             return 'Val type invalid'
-        if key.split('.')[0] not in FileStorage.CLASSES:
+        if key.split('.')[0] not in this.factory():
             return 'key must be a valid model '
         try:
             FileStorage.__objects[key][prop] = val
@@ -72,7 +91,7 @@ class FileStorage:
                 continue
             if type(obj[val]) not in [int, str, float]:
                 continue
-            if key.split('.')[0] not in FileStorage.CLASSES:
+            if key.split('.')[0] not in this.factory():
                 continue
             try:
                 FileStorage.__objects[key][val] = obj[val]

@@ -3,7 +3,7 @@
 creates an instance of a command window
 """
 import cmd
-from models import storage, CLASSES
+from models import storage
 import importlib
 import re
 import json
@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, arg):
         """ Handles line args """
-        if arg.split('.')[0] not in CLASSES:
+        if arg.split('.')[0] not in storage.factory():
             return False
         if arg.split('.', 1)[-1] == 'all()':
             self.do_all(arg.split('.')[0])
@@ -92,14 +92,14 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Shows all the BaseModels in storage """
-        if arg and arg in CLASSES:
+        if arg and arg in storage.factory():
             res = []
             for key, obj in storage.all().items():
                 if type(obj).__name__ == arg.split(' ')[0]:
                     res.append(str(obj))
             print(res)
             return False
-        elif arg and arg.split(' ')[0] not in CLASSES:
+        elif arg and arg.split(' ')[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
         else:
@@ -112,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return False
-        if arg.split(" ")[0] not in CLASSES:
+        if arg.split(" ")[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
         if len(arg.split(" ")) != 2:
@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return False
-        if arg.split(' ')[0] not in CLASSES:
+        if arg.split(' ')[0] not in storage.factory():
             print("** class doesn't exist **")
             return False
         if len(arg.split(" ")) != 2:
@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
             return False
         for objs in storage.all():
             if objs == (arg.split(' ')[0] + '.' + arg.split(" ")[1]):
-                print(str(CLASSES[objs.split('.')[0]](**storage.all()[objs])))
+                print(str(storage.factory()[objs.split('.')[0]](**storage.all()[objs])))
                 return False
         print("** no instance found **")
         return False
@@ -151,10 +151,10 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return False
-        if arg not in CLASSES:
+        if arg not in storage.factory():
             print("** class doesn't exist **")
             return False
-        bm = CLASSES[arg]()
+        bm = storage.factory()[arg]()
         bm.save()
         print(bm.id)
         return False
