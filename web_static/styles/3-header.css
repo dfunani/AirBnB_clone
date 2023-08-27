@@ -1,0 +1,11 @@
+.header-container {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px #CCCCCC solid;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 20px;
+    background-image: url("../images/logo.png");
+    background-repeat: no-repeat;
+}
